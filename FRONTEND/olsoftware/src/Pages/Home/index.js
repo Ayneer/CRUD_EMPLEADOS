@@ -2,7 +2,7 @@ import React from 'react';
 
 const Home = () => {
     return (
-        <div> Descripción del aplicativo... </div>
+        <div> APP PARA GESTIONAR EMPLEADOS, DISEÑADA COMO PRUEBA TÉCNICA PARA LA EMPRESA OLSOFTWARE POR EL ING. AYNEER GONZALEZ. </div>
     )
 }
 

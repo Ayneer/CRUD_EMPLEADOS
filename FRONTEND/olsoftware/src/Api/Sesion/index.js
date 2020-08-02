@@ -1,5 +1,5 @@
 import Auth from "Services/Auth";
-import { URL_SERVER, resModel } from "Config/Server";
+import { URL_SERVER } from "Config/Server";
 
 const LogIn = async (CorreoElectronico, Contraseña) => {
     let resModel;

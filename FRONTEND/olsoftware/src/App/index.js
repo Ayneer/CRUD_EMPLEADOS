@@ -15,25 +15,24 @@ const App = () => {
     const { LOGIN, APP } = MenuRoutes;
 
     const dispatch = useDispatch();
-    const _getUserDatils = (cb) => dispatch(gerUserData(cb));
+    // const _getUserDatils = (cb) => dispatch(gerUserData(cb));
 
     //Se escucha si hay o no sesión
     const isAuth = useSelector(({ Sesion }) => _isAuth(Sesion));   
 
     useEffect(() => {
         if(Auth.getToken() && !isAuth){//Hay un token, se procede a recuperar la sesión
-            _getUserDatils(()=>{});
+            dispatch(gerUserData(()=>{}));
         }
         return () => { }
-    }, []);
-
-    console.log(isAuth)
+    }, [dispatch, isAuth]);
 
     return (
         <div>
             {isAuth ?
                 <Switch>
                     <Route path={APP} component={Layout} />
+                    <Route path={LOGIN} component={Layout} />
                     <Route exact path="/" render={() => <Redirect to={APP} />} />
                 </Switch>
                 :

@@ -56,6 +56,7 @@ export const _changeIsAuth = isAuth => ({ type: CHANGE_AUTH, isAuth });
 export const _changeLoadingSesion = loadingSesion => ({ type: CHANGE_LOADING_SESION, loadingSesion });
 export const _getUser = state => ((state && state.user) || null);
 export const _isAuth = state => ((state && state.isAuth) || null);
+export const getLoadingSesion = state => ((state && state.loadingSesion) || null);
 export const _getInfoUser = state => {
     if (_getUser(state)) {
         return {
