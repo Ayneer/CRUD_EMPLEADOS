@@ -1,0 +1,10 @@
+body{
+    background-color: #f1f4f6;
+    // display:flex;
+    margin: 0;
+    height:100%;
+  width:100%;
+}
+
+@import "components/AppNavbar/index.scss";
+@import "pages/Login/index.scss";
