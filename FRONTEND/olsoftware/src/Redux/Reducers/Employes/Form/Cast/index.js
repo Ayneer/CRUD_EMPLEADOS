@@ -8,7 +8,7 @@ export const prepareToDataBase = form => {
         Identificacion: getInfo.getIdentificacion(form),
         RolAsociado: RolesAsociados.getValue(getInfo.getRolAsociado(form)),
         Estado: Estados.getValue(getInfo.getEstado(form)),
-        Contraseña: getInfo.getEstado(form).trim(),
+        Contraseña: getInfo.getContraseña(form),
         Telefono: getInfo.getTelefono(form),
         CorreoElectronico: getInfo.getCorreoElectronico(form).trim(),
     }
