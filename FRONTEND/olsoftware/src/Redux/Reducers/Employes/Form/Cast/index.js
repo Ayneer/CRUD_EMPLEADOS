@@ -15,6 +15,7 @@ export const prepareToDataBase = form => {
 }
 
 export const prepareToView = (doc, rolesAsociados, estados) => {
+   
     const { Nombres, Apellidos, Identificacion, RolAsociado, Estado, Contraseña, Telefono, CorreoElectronico, _id } = doc;
 
     return {

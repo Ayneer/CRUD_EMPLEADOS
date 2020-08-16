@@ -25,6 +25,7 @@ const Find = async authUser => {
                 RolAsociado: employed.data().RolAsociado,
                 Estado: employed.data().Estado,
                 Telefono: employed.data().Telefono,
+                Contraseña: employed.data().Contraseña,
                 CorreoElectronico: employed.data().CorreoElectronico,
                 IdUsuarioCreador: employed.data().IdUsuarioCreador,
                 createdAt: employed.data().createdAt

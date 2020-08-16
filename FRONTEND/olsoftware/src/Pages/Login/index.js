@@ -8,10 +8,13 @@ import { PersonOutlineOutlined, LockOpenOutlined } from '@material-ui/icons';
 import { required, validEmail } from "Forms/Validate";
 import { useDispatch } from 'react-redux';
 import { login } from 'Redux/Actions/Sesion';
+import BlockUi from 'react-block-ui';
+import LoadingState from 'Components/Loading';
+import { NotifyError } from 'Components/Notification';
 
 const formName = 'formLogin';
 
-let Login = ({handleSubmit}) => {
+let Login = ({ handleSubmit }) => {
 
     const [loadingSesion, setLoadingSesion] = useState(false);
 
@@ -23,95 +26,96 @@ let Login = ({handleSubmit}) => {
         const { Password, User } = values;
         if (Password && User) {
             setLoadingSesion(true);
-            console.log(User.trim(), Password.trim());
             _signIn(User.trim(), Password.trim(), (err, message) => {
-                if(err){
-                    console.log(message)
-                }else{
-                    console.log("Sesión iniciada correctamente!!");
+                if (err) {
+                    setLoadingSesion(false);
+                    NotifyError(message);
                 }
             })
         }
     }
 
     useEffect(() => {
-        return () => {setLoadingSesion(false)}
+        return () => { setLoadingSesion(false) }
     }, []);
 
     return (
-        <Fragment>
-            {/* Para animar el componente */}
-            <ReactCSSTransitionGroup
-                component="div"
-                transitionName="TabsAnimation"
-                transitionAppear={true}
-                transitionAppearTimeout={0}
-                transitionEnter={false}
-                transitionLeave={false}
-            >
-                <div className="login" >
-                    <Typography className="title" variant="h6" noWrap>
-                        Inicio de sesión
+        <BlockUi tag="div" blocking={loadingSesion} className="block-overlay-dark" loader={<LoadingState message={"Estamos preparando todo para tí"} />} renderChildren={true}>
+            <Fragment>
+                {/* Para animar el componente */}
+                <ReactCSSTransitionGroup
+                    component="div"
+                    transitionName="TabsAnimation"
+                    transitionAppear={true}
+                    transitionAppearTimeout={0}
+                    transitionEnter={false}
+                    transitionLeave={false}
+                >
+                    <div className="login" >
+                        <Typography className="title" variant="h6" noWrap>
+                            Inicio de sesión
                     </Typography>
-                    <Row>
-                        <Col xl={12} md={12} sm={12} xs={12}>
-                            <FormGroup>
-                                <Field
-                                    id="UserLogin"
-                                    name="User"
-                                    component={renderInput}
-                                    label="Usuario"
-                                    disabled={loadingSesion}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <PersonOutlineOutlined fontSize="small" />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                    requerido={true}
-                                    validate={[required, validEmail]}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col xl={12} md={12} sm={12} xs={12}>
-                            <FormGroup>
-                                <Field
-                                    id="PasswordLogin"
-                                    name="Password"
-                                    type={"password"}
-                                    component={renderInput}
-                                    label="Contraseña"
-                                    disabled={loadingSesion}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end" >
-                                                <LockOpenOutlined fontSize="small" />
-                                            </InputAdornment >
-                                        )
-                                    }}
-                                    requerido={true}
-                                    validate={[required]}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col xl={12} md={12} sm={12} xs={12}>
-                            <FormGroup>
-                                <Button
-                                    onClick={handleSubmit(_login)}
-                                    onSubmit={handleSubmit(_login)}
-                                    color="primary"
-                                    className="btn-login"
-                                    disabled={loadingSesion}
-                                >
-                                    Iniciar sesión
+                        <Row>
+                            <Col xl={12} md={12} sm={12} xs={12}>
+                                <FormGroup>
+                                    <Field
+                                        id="UserLogin"
+                                        name="User"
+                                        component={renderInput}
+                                        label="Usuario"
+                                        disabled={loadingSesion}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <PersonOutlineOutlined fontSize="small" />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                        requerido={true}
+                                        validate={[required, validEmail]}
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col xl={12} md={12} sm={12} xs={12}>
+                                <FormGroup>
+                                    <Field
+                                        id="PasswordLogin"
+                                        name="Password"
+                                        type={"password"}
+                                        component={renderInput}
+                                        label="Contraseña"
+                                        disabled={loadingSesion}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end" >
+                                                    <LockOpenOutlined fontSize="small" />
+                                                </InputAdornment >
+                                            )
+                                        }}
+                                        requerido={true}
+                                        validate={[required]}
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col xl={12} md={12} sm={12} xs={12}>
+                                <FormGroup>
+                                    <Button
+                                        onClick={handleSubmit(_login)}
+                                        onSubmit={handleSubmit(_login)}
+                                        color="primary"
+                                        className="btn-login"
+                                        disabled={loadingSesion}
+                                    >
+                                        Iniciar sesión
                                 </Button>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </div>
-            </ReactCSSTransitionGroup>
-        </Fragment>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </div>
+                </ReactCSSTransitionGroup>
+            </Fragment>
+        </BlockUi>
+
     )
 }
 

@@ -9,13 +9,22 @@ export const login = (CorreoElectronico, Contraseña, cb) => {
             if (response.Error || !response.Data) {//Error
                 cb(true, response.Mensaje);
             } else {
-                dispatch(_changeUser(null, true));//Se indica que esta la sesión iniciada
+                //Se guarda el token
                 Auth.saveToken(response.Data.Token);
-                cb(false, null);
-            }
-        }).catch(err => {
-            cb(true, err.message);
-        })
+
+                //Se busca los datos del usuario
+                dispatch(getUserData((err, message, user) => {
+                    if (err) {
+                        cb(true, message);
+                    } else {
+                        dispatch(_changeUser(user, true));//Se indica que esta la sesión iniciada
+                        cb(false, null);
+                    }
+                }));
+    }
+}).catch (err => {
+    cb(true, err.message);
+})
     }
 }
 
@@ -35,11 +44,18 @@ export const logout = cb => {
 }
 
 //Metodo que obtiene los datos del usuario autenticado
-export const gerUserData = cb => {
+export const getUserData = cb => {
     return (dispatch, getState, Api) => {
         return Api.Sesion.getUserDetails().then(response => {
-            if (response.Error || !response.Data) {//Error
-                cb(true, response.Mensaje, null);
+         
+            if (response.Error || !response.Data) {//Error en la autenticación, cerramos sesión por seguridad
+                dispatch(logout((err, message) => {
+                    if (!err) {
+                        cb(true, response.Mensaje, null);
+                    } else {
+                        cb(true, message, null);
+                    }
+                }))
             } else {
                 dispatch(_changeUser(response.Data, true));//Se carga el usuario en Redux
                 cb(false, null, response.Data);

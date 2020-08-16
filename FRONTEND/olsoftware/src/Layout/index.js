@@ -11,6 +11,7 @@ import Employes from 'Pages/Employes';
 import { MenuRoutes } from './Helper';
 import Footer from './Footer';
 import { useSelector } from 'react-redux';
+import { _getInfoUser } from 'Redux/Reducers/Sesion';
 
 //Componente que ilustra la estructura general de aplicativo
 const Layout = () => {
@@ -22,12 +23,13 @@ const Layout = () => {
 
     //State redux
     const menuState = useSelector(({ Menu }) => Menu.open);
+    const { Nombres, Apellidos } = useSelector(({ Sesion }) => _getInfoUser(Sesion));
 
     return (
         <div className={classes.root}>
 
             {/* Menú horizontal */}
-            <AppNavbar userName={"Ayneer Luis Gonzalez Geles"} title={"Prueba front-end"} />
+            <AppNavbar userName={`${Nombres} ${Apellidos}`} title={"Prueba front-end"} />
 
             {/* Menú vertical */}
             <VerticalMenu />

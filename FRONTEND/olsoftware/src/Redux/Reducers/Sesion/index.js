@@ -5,12 +5,14 @@ import { LIMPIAR_STATE_SALIR } from 'Redux/variables';
 const CHANGE_USER = "CHANGE_USER";
 const CHANGE_AUTH = "CHANGE_AUTH";
 const CHANGE_LOADING_SESION = "CHANGE_LOADING_SESION";
+const CHECKING_SESION = "CHECKING_SESION";
 
 //Estos en su forma inicial
 const initState = {
     user: null,
     isAuth: false,
-    loadingSesion: false
+    loadingSesion: false,
+    chekingSesion: true
 }
 
 //Manejo de los estados del menú con redux
@@ -28,7 +30,8 @@ export const Sesion = (state = initState, action) => {
             return {
                 ...state,
                 user: action.user,
-                isAuth: action.isAuth
+                isAuth: action.isAuth,
+                chekingSesion: false
             }
         }
 
@@ -46,6 +49,13 @@ export const Sesion = (state = initState, action) => {
             }
         }
 
+        case CHECKING_SESION: {
+            return {
+                ...state,
+                chekingSesion: action.chekingSesion
+            }
+        }
+
         default:
             return state;
     }
@@ -54,17 +64,14 @@ export const Sesion = (state = initState, action) => {
 export const _changeUser = (user, isAuth) => ({ type: CHANGE_USER, user, isAuth });
 export const _changeIsAuth = isAuth => ({ type: CHANGE_AUTH, isAuth });
 export const _changeLoadingSesion = loadingSesion => ({ type: CHANGE_LOADING_SESION, loadingSesion });
-export const _getUser = state => ((state && state.user) || null);
+export const _changeChekingSesion = chekingSesion => ({ type: CHECKING_SESION, chekingSesion });
+export const _getUser = state => state && state.user ? state.user : null;
 export const _isAuth = state => ((state && state.isAuth) || null);
-export const getLoadingSesion = state => ((state && state.loadingSesion) || null);
+export const getLoadingSesion = state => ((state && (state.loadingSesion !== undefined)) || null);
+export const getChekingSesion = state => state ? state.chekingSesion : true;
 export const _getInfoUser = state => {
-    if (_getUser(state)) {
-        return {
-            Nombre: "",
-            Apellidos: "",
-            CorreoElectronico:"",
-            Identificacion: "",
-            Uid: ""
-        }
+    const user = _getUser(state);
+    if (user) {
+        return { ...user }
     }
 }

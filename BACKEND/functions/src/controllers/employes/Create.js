@@ -11,12 +11,12 @@ const handler = async (req, res, next) => {
         //Se instancia el modelo de respuesta
         const { generalModel } = require('../../helper/responseModel');
 
-        const { Nombres, Apellidos, Identificacion, RolAsociado, Estado, Telefono, CorreoElectronico } = req.body;
+        const { Nombres, Apellidos, Identificacion, RolAsociado, Estado, Contraseña, Telefono, CorreoElectronico } = req.body;
 
         //Se verifica que efectivamente exista el usuario autenticado y que todos los datos esten correctos
         if (req.user && Nombres && Apellidos && Identificacion && RolAsociado && Estado && Telefono && CorreoElectronico) {
 
-            const response = await create({ Nombres, Apellidos, Identificacion, RolAsociado, Estado, Telefono, CorreoElectronico }, req.user);
+            const response = await create({ Nombres, Apellidos, Identificacion, RolAsociado, Estado, Contraseña, Telefono, CorreoElectronico }, req.user);
             //Se responde
             res.status(status(response.Status)).send(response);
 

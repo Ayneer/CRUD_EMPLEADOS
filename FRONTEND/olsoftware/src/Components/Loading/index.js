@@ -5,9 +5,9 @@ import { Typography } from '@material-ui/core';
 //Componente encargado de ilustrar el estado de cargando
 const LoadingState = ({message}) => {
     return (
-        <div>
-            <Loader color="#ffffff" active type={"ball-pulse"} />
-            <Typography>{message}</Typography>
+        <div className="loading-state">
+             <Typography className="message">{message}</Typography>
+            <Loader active type={"ball-pulse"} />
         </div>
     )
 }

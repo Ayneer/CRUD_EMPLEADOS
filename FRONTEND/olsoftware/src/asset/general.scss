@@ -1,5 +1,12 @@
+// Variables globales
+$primary: #333399;
+// $secondary: $gray-600;
+$textColor: #666666;
+$textWhite: #fff;
+$generalBackgroud: #f1f4f6;
+
 body{
-    background-color: #f1f4f6;
+    background-color: $generalBackgroud;
     // display:flex;
     margin: 0;
     height:100%;
@@ -7,4 +14,31 @@ body{
 }
 
 @import "components/AppNavbar/index.scss";
+@import "components/loader/index.scss";
+@import "components/block-ui/index.scss";
 @import "pages/Login/index.scss";
+
+.loading-state-all-page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  align-items: center;
+  JUSTIFY-CONTENT: center;
+  .loading-state{
+
+    .loader {
+      .loader-inner {
+        &.ball-pulse > div{
+          background-color: black;
+        }
+      }
+    }
+ 
+    .message{
+      color: black;
+    }
+  }
+}
+
+

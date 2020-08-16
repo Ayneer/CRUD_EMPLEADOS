@@ -5,6 +5,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { reduxForm } from 'redux-form';
 import { useSelector, useDispatch, connect } from 'react-redux';
 import Table from 'Components/Table';
+import { NotifyError, NotySuccess } from 'Components/Notification'
 
 import HeaderContent from 'Components/HeaderContent';
 import { getInfo, form, getInfoFilter } from 'Redux/Reducers/Employes/Form';
@@ -129,9 +130,9 @@ let Employes = ({ handleSubmit, reset }) => {
             const employe = getEmployeById(row.C, data);
             _deleteEmploye(getInfo.getUid(employe), (err, message) => {
                 if (!err) {
-                    console.log("Empleado eliminado con exito");
+                    NotySuccess("Empleado eliminado con exito!");
                 } else {
-                    console.log("Error al elinminar empleado. " + message);
+                    NotifyError(message);
                 }
                 cb();
             });
@@ -153,9 +154,9 @@ let Employes = ({ handleSubmit, reset }) => {
             _editEmployeAct(formEmploye, getInfo.getUid(formEmploye), (err, message) => {
                 if (!err) {
                     _closeModalEmploye();
-                    console.log("Empleado editado con exito");
+                    NotySuccess("Empleado editado con exito!");
                 } else {
-                    console.log("Error al crear empleado. " + message);
+                    NotifyError(message);
                 }
             });
         }
@@ -169,9 +170,9 @@ let Employes = ({ handleSubmit, reset }) => {
             _addEmploye(formEmploye, (err, message) => {
                 if (!err) {
                     _closeModalEmploye();
-                    console.log("Empleado creado con exito");
+                    NotySuccess("Empleado creado con exito!");
                 } else {
-                    console.log("Error al crear empleado. " + message);
+                    NotifyError(message);
                 }
             })
         }
@@ -200,15 +201,19 @@ let Employes = ({ handleSubmit, reset }) => {
 
     useEffect(() => {
         //Se buscan los empleados, simepre y cuento no esten cargados
-        function _getEmployes() {
+        function _getEmployes(cb) {
             if (!loadedData) {
-                dispatch(getEmployes(rolesAsociadosSelects, estadosSelects));
+                dispatch(getEmployes(rolesAsociadosSelects, estadosSelects, cb));
             }
         }
-        _getEmployes();
+        _getEmployes((err, message) => {
+            if(err){
+                NotifyError(message);
+            }
+        });
         return () => { }
     }, [dispatch, loadedData, estadosSelects, rolesAsociadosSelects]);
-
+   
     //Componente
     return (
         <Fragment>
@@ -243,14 +248,14 @@ let Employes = ({ handleSubmit, reset }) => {
                                         { label: 'Editar', classIcon: 'Edit', icon: <Edit fontSize="small" />, funct: _chargeEmployeData, confirmarAction: false },
                                     ]
                                 }
-                                blockConfirmModal={workingPersistence}
+                                blockConfirmModal={!loadingData && workingPersistence}
                                 numberDataPerPag={8}
                             />
 
                             {/* Modal para editar y crear empleados */}
                             <ModalBody
                                 modalTitle={"Agregar nuevo empleado"}
-                                block={workingPersistence}
+                                block={(modalEmployes.isOpen && workingPersistence)}
                                 disabledInput={workingPersistence}
                                 modalOpen={modalEmployes.isOpen}
                                 cancelToggle={_closeModalEmploye}
@@ -271,10 +276,10 @@ let Employes = ({ handleSubmit, reset }) => {
 
                             {/* Cuerpo */}
                             <Fragment>
-                                <EmployesForm formSection={"filterData"} disabled={false} requiredInput={false} />
+                                <EmployesForm formSection={"filterData"} disabled={(data && Array.isArray(data) && data.length > 0) ? false : true} requiredInput={false} />
                                 <div style={{ display: "flex", alignItems: "start" }}>
-                                    <Button className="mr-1" color="primary" onClick={handleSubmit(_filterData)}>Filtrar</Button>
-                                    <Button color="secondary" onClick={_clearFilterData}>Limpiar</Button>
+                                    <Button disabled={(data && Array.isArray(data) && data.length > 0) ? false : true} className="mr-1" color="primary" onClick={handleSubmit(_filterData)}>Filtrar</Button>
+                                    <Button disabled={(data && Array.isArray(data) && data.length > 0) ? false : true} color="secondary" onClick={_clearFilterData}>Limpiar</Button>
                                 </div>
                             </Fragment>
 

@@ -6,11 +6,14 @@ import Api from 'Api';
 
 //Configuración del store de redux
 export default () => {
+
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
     return createStore(
         combineReducers({
             ...appReducers,
             form: reduxFormReducer
         }),
-        compose( applyMiddleware(thunk.withExtraArgument(Api)) ),//Uno de los argumentos a trabajar con thunk de forma asincrona es la API (Firebase)
+        composeEnhancers( applyMiddleware(thunk.withExtraArgument(Api)) ),//Uno de los argumentos a trabajar con thunk de forma asincrona es la API (Firebase)
     )
 }
